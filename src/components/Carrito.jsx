@@ -1,14 +1,20 @@
 import React, { useContext } from 'react'
 import { CartContext } from '../context/CartContext'
 import { Link } from 'react-router-dom';
+import papelera from './papelera.png'
 
 const Carrito = () => {
 
-  const { carrito, precioTotal, vaciarCarrito } = useContext(CartContext);
+  const { carrito, precioTotal, vaciarCarrito, deleteItem } = useContext(CartContext);
 
   const handleVaciar = () => {
     vaciarCarrito();
   }
+
+  // const handleDeleteItem = () => {
+  //   deleteItem()
+  // }
+
 
   return (
     <div className="container">
@@ -16,12 +22,13 @@ const Carrito = () => {
 
       {
         carrito.map((prod) => (
-          <div key={prod.id}>
+          <div className='proCar' key={prod.id}>
             <br />
             <h3>{prod.name}</h3>
             <p>Precio unit: ${prod.price}</p>
             <p>Precio total: ${prod.price * prod.cantidad}</p>
             <p>Cant: {prod.cantidad}</p>
+            <img onClick={() => deleteItem(prod.id)} className='tacho' src={papelera} alt="" />
             <br />
           </div>
         ))
@@ -31,8 +38,12 @@ const Carrito = () => {
         carrito.length > 0 ?
           <>
             <h2>Precio total: ${precioTotal()}</h2>
-            <button onClick={handleVaciar}>Vaciar</button>
-            <button><Link to="/checkout">Finalizar compra</Link></button>
+            <div className='comandos'>
+              <img onClick={handleVaciar} src={papelera} alt="" />
+              <p>Vaciar Carrito</p>
+              <br />
+              <button><Link to="/checkout">Finalizar compra</Link></button>
+            </div>
           </> :
           <h2>El carrito está vacío </h2>
       }
